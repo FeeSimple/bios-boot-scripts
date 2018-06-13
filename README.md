@@ -3,6 +3,10 @@
 According to the bios boot tutorial (https://github.com/EOSIO/eos/tree/master/tutorials/bios-boot-tutorial),
 some extra scripts are created for easy usage.
 
+```
+Currently, only this revision of EOS software (master branch) works: a97a49a0dd4f5051dc7de1de4bc654fedf49cadf
+```
+
 Please copy these scripts into the folder `$EOS_ROOT_DIR/tutorials/bios-boot-tutorial` from which the scripts can be executed.
 
 * `cleanup.sh` script performs cleanup operation.
