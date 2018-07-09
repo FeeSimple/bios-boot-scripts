@@ -13,9 +13,7 @@ import time
 args = None
 logFile = None
 
-#unlockTimeout = 99999999999
 unlockTimeout = 9999
-p2pListenEndpoint = '0.0.0.0'
 fastUnstakeSystem = './fast.refund/eosio.system/eosio.system.wasm'
 
 systemAccounts = [
@@ -79,7 +77,7 @@ def startWallet():
     run(args.cleos + 'wallet create')
 
 def importKeys():
-    run(args.cleos + 'wallet import ' + args.private_key)
+    run(args.cleos + 'wallet import --private-key ' + args.private_key)
     keys = {}
     for a in accounts:
         key = a['pvt']
@@ -87,13 +85,13 @@ def importKeys():
             if len(keys) >= args.max_user_keys:
                 break
             keys[key] = True
-            run(args.cleos + 'wallet import ' + key)
+            run(args.cleos + 'wallet import --private-key ' + key)
     for i in range(firstProducer, firstProducer + numProducers):
         a = accounts[i]
         key = a['pvt']
         if not key in keys:
             keys[key] = True
-            run(args.cleos + 'wallet import ' + key)
+            run(args.cleos + 'wallet import --private-key ' + key)
 
 def startNode(nodeIndex, account):
     dir = args.nodes_dir + ('%02d-' % nodeIndex) + account['name'] + '/'
@@ -106,7 +104,7 @@ def startNode(nodeIndex, account):
     )
     cmd = (
         args.nodeos +
-        '    --max-irreversible-block-age 9999999'
+        '    --max-irreversible-block-age -1'
         '    --contracts-console'
         '    --genesis-json ' + os.path.abspath(args.genesis) +
         '    --blocks-dir ' + os.path.abspath(dir) + '/blocks'
@@ -114,13 +112,16 @@ def startNode(nodeIndex, account):
         '    --data-dir ' + os.path.abspath(dir) +
         '    --chain-state-db-size-mb 1024'
         '    --http-server-address 127.0.0.1:' + str(8000 + nodeIndex) +
-       #'    --p2p-listen-endpoint 127.0.0.1:' + str(9000 + nodeIndex) +
-        '    --p2p-listen-endpoint ' + p2pListenEndpoint + ':' + str(9000 + nodeIndex) +
+        '    --p2p-listen-endpoint 0.0.0.0:' + str(9000 + nodeIndex) +
         '    --max-clients ' + str(maxClients) +
         '    --p2p-max-nodes-per-host ' + str(maxClients) +
         '    --enable-stale-production'
         '    --producer-name ' + account['name'] +
         '    --private-key \'["' + account['pub'] + '","' + account['pvt'] + '"]\''
+        '    --delete-all-blocks'
+        '    --mongodb-wipe --mongodb-uri mongodb://localhost:27017/EOStest'
+        '    --abi-serializer-max-time-ms 1000'
+        '    --plugin eosio::mongo_db_plugin'
         '    --plugin eosio::http_plugin'
         '    --plugin eosio::chain_api_plugin'
         '    --plugin eosio::producer_plugin' +
@@ -144,7 +145,7 @@ def allocateFunds(b, e):
     dist = numpy.random.pareto(1.161, e - b).tolist() # 1.161 = 80/20 rule
     dist.sort()
     dist.reverse()
-    factor = 1000000000 / sum(dist)
+    factor = 1_000_000_000 / sum(dist)
     total = 0
     for i in range(b, e):
         funds = round(factor * dist[i - b] * 10000)
@@ -161,6 +162,9 @@ def createStakedAccounts(b, e):
     for i in range(b, e):
         a = accounts[i]
         funds = a['funds']
+        print('#' * 80)
+        print('# %d/%d %s %s' % (i, e, a['name'], intToCurrency(funds)))
+        print('#' * 80)
         if funds < ramFunds:
             print('skipping %s: not enough funds to cover ram' % a['name'])
             continue
@@ -171,9 +175,10 @@ def createStakedAccounts(b, e):
         stakeCpu = stake - stakeNet
         print('%s: total funds=%s, ram=%s, net=%s, cpu=%s, unstaked=%s' % (a['name'], intToCurrency(a['funds']), intToCurrency(ramFunds), intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(unstaked)))
         assert(funds == ramFunds + stakeNet + stakeCpu + unstaked)
-        run(args.cleos + 'system newaccount --transfer eosio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram-EOS "%s"   ' % 
+        retry(args.cleos + 'system newaccount --transfer eosio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' % 
             (a['name'], a['pub'], intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(ramFunds)))
-        run(args.cleos + 'transfer eosio %s "%s"' % (a['name'], intToCurrency(unstaked)))
+        if unstaked:
+            retry(args.cleos + 'transfer eosio %s "%s"' % (a['name'], intToCurrency(unstaked)))
 
 def regProducers(b, e):
     for i in range(b, e):
@@ -271,7 +276,7 @@ def msigReplaceSystem():
 
 def produceNewAccounts():
     with open('newusers', 'w') as f:
-        for i in range(3000, 30000):
+        for i in range(120_000, 200_000):
             x = getOutput(args.cleos + 'create key')
             r = re.match('Private key: *([^ \n]*)\nPublic key: *([^ \n]*)', x, re.DOTALL | re.MULTILINE)
             name = 'user'
