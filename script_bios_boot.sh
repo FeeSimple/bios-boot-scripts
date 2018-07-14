@@ -9,4 +9,4 @@ WALLET_DIR='--wallet-dir ~/eosio-wallet'
 # --symbol opt doesn't work
 SYMBOL='--symbol FST'
 
-./bios-boot-tutorial.py -all $LIMIT_PROD_USER | tee my_log.txt
+./bios-boot-tutorial.py -all $LIMIT_PROD_USER $SYMBOL | tee my_log.txt

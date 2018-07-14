@@ -72,7 +72,7 @@ def sleep(t):
 def startWallet():
     run('rm -rf ' + os.path.abspath(args.wallet_dir))
     run('mkdir -p ' + os.path.abspath(args.wallet_dir))
-    background(args.keosd + ' --unlock-timeout %d --http-server-address 127.0.0.1:6666 --wallet-dir %s' % (unlockTimeout, os.path.abspath(args.wallet_dir)))
+    background(args.keosd + ' --http-validate-host false --unlock-timeout %d --http-server-address 127.0.0.1:6666 --wallet-dir %s' % (unlockTimeout, os.path.abspath(args.wallet_dir)))
     sleep(.4)
     run(args.cleos + 'wallet create')
 
@@ -118,10 +118,8 @@ def startNode(nodeIndex, account):
         '    --enable-stale-production'
         '    --producer-name ' + account['name'] +
         '    --private-key \'["' + account['pub'] + '","' + account['pvt'] + '"]\''
+        '    --http-validate-host false'
         '    --delete-all-blocks'
-        '    --mongodb-wipe --mongodb-uri mongodb://localhost:27017/EOStest'
-        '    --abi-serializer-max-time-ms 1000'
-        '    --plugin eosio::mongo_db_plugin'
         '    --plugin eosio::http_plugin'
         '    --plugin eosio::chain_api_plugin'
         '    --plugin eosio::producer_plugin' +
