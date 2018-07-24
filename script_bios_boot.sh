@@ -1,7 +1,7 @@
-#!/bin/bash
+./cleanup.sh
 
 # Need to limit the number of producers and users to avoid the error "Over withdrawn balance"
-LIMIT_PROD_USER='--producer-limit 4 --user-limit 4 --num-voters 4 --num-producers-vote 4 --ram-funds 1000'
+LIMIT_PROD_USER='--producer-limit 4 --user-limit 7 --num-voters 4 --num-producers-vote 4 --ram-funds 1000000'
 
 FUND='--max-unstaked 2000 --min-producer-funds 2000'
 
@@ -9,6 +9,6 @@ FUND='--max-unstaked 2000 --min-producer-funds 2000'
 WALLET_DIR='--wallet-dir ~/eosio-wallet'
 
 # --symbol opt doesn't work
-SYMBOL='--symbol FST'
+SYMBOL='--symbol XFS'
 
 ./bios-boot-tutorial.py -all $LIMIT_PROD_USER $SYMBOL | tee my_log.txt
