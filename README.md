@@ -1,7 +1,7 @@
 # Bios Boot Script for Testnet
 
 According to the bios boot tutorial (https://github.com/EOSIO/eos/tree/master/tutorials/bios-boot-tutorial),
-some extra scripts are created for easy usage.
+extra scripts have been created for easy usage.
 
 ```
 Currently, only this revision of EOS software (master branch) works: a97a49a0dd4f5051dc7de1de4bc654fedf49cadf
@@ -12,12 +12,9 @@ Please copy these scripts into the folder `$EOS_ROOT_DIR/tutorials/bios-boot-tut
 * `cleanup.sh` script performs cleanup operation.
 * `script_bios_boot.sh` script executes the bios boot sequence with custom configuration.
 
-The final result is that a set of block producer nodes and user nodes is
-created. A subset of block producer nodes is then randomly voted as EBP (Elected Block Producer).
-Only one of the EBPs is in turn producing blocks for totally 12 times.
+A set of block producer nodes and user nodes is created. A subset of block producer nodes is then randomly voted as EBP (Elected Block Producer). Only one of the EBPs is in turn producing blocks for total of 12 times.
 
-The log output is redirected to the file `my_log.txt` from which the passphrase
-of the created wallet can be saved.
+The log output is redirected to the file `my_log.txt` from which the passphrase of the created wallet can be saved.
 
 `For this kind of testnet, the deployment of block producers is controlled by
 a central host whereas for the real-world mainnet, the block producers are
