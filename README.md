@@ -1,4 +1,4 @@
-# Bios Boot Script for Testnet
+# Bios Boot Scripts for Testnet
 
 According to the bios boot tutorial (https://github.com/EOSIO/eos/tree/master/tutorials/bios-boot-tutorial),
 extra scripts have been created for easy usage.
