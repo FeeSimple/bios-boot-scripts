@@ -1,14 +1,11 @@
 ./cleanup.sh
 
 # Need to limit the number of producers and users to avoid the error "Over withdrawn balance"
-LIMIT_PROD_USER='--producer-limit 4 --user-limit 7 --num-voters 4 --num-producers-vote 4 --ram-funds 1000000'
+LIMIT_PROD_USER='--producer-limit 4 --user-limit 10 --num-voters 4 --num-producers-vote 4'
 
-FUND='--max-unstaked 2000 --min-producer-funds 2000'
+FUND='--max-unstaked 1000000'
+RAM='--ram-funds 10000'
 
-# Need to specify wallet dir with the default wallet dir because the cmd "cleos wallet unlock" only knows to look up in the default location 
-WALLET_DIR='--wallet-dir ~/eosio-wallet'
-
-# --symbol opt doesn't work
 SYMBOL='--symbol XFS'
 
-./bios-boot-tutorial.py -all $LIMIT_PROD_USER $SYMBOL | tee my_log.txt
+./bios-boot-tutorial.py -all $LIMIT_PROD_USER $FUND $RAM $SYMBOL

@@ -1,7 +1,0 @@
-2319092ms thread-0   wallet.cpp:199                save_wallet_file
-] saving wallet to file
-/home/trungtt/Work/reference/dyver/eos/tutorials/bios-boot-tutorial/wallet/default.wallet
-Creating wallet: default
-Save password to use in the future to unlock this wallet.
-Without password imported keys will not be retrievable.
-"PW5JFKvN2Z8VhuWH7WZTMsTRa75TwQjCTGA4UVddhES8FY1coy8Az"
