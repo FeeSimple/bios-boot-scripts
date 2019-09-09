@@ -1,0 +1,100 @@
+
+
+********************************************************************************
+
+
+killall keosd nodeos || true
+rm -rf /root/bios-boot-scripts/wallet
+mkdir -p /root/bios-boot-scripts/wallet
+/usr/bin/keosd --unlock-timeout 999999999 --http-server-address 127.0.0.1:6666 --wallet-dir /root/bios-boot-scripts/wallet
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet create --to-console
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5K6LU8aVpBq9vJsnpCvaHCcyYwzPPKXfDdyefYyAMMs3Qy42fUr
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5KdRpt1juJfbPEryZsQYxyNxSTkXTdqEiL4Yx9cAjdgApt4ANce
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5JRMbcnc35NkvxKTZUnoe3W4ENQCjhMUFwjN5jQmAqN9D7N6y3N
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5HqyipkJSm5fwYhbhGC3vmmoBwabtgJSPecnvmN2mMrCTQfWBSS
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b
+/usr/bin/cleos --url http://127.0.0.1:8000 wallet import --private-key 5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu
+rm -rf ./nodes/00-eosio/
+mkdir -p ./nodes/00-eosio/
+/usr/bin/nodeos    --max-irreversible-block-age -1    --contracts-console    --genesis-json /root/bios-boot-scripts/genesis.json    --blocks-dir /root/bios-boot-scripts/nodes/00-eosio/blocks    --config-dir /root/bios-boot-scripts/nodes/00-eosio    --data-dir /root/bios-boot-scripts/nodes/00-eosio    --chain-state-db-size-mb 1024    --http-server-address 127.0.0.1:8000    --p2p-listen-endpoint 127.0.0.1:9000    --max-clients 12    --p2p-max-nodes-per-host 12    --enable-stale-production    --producer-name eosio    --private-key '["EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr","5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p"]'    --plugin eosio::http_plugin    --plugin eosio::chain_api_plugin    --plugin eosio::producer_plugin    --plugin eosio::history_plugin    --plugin eosio::history_api_plugin    2>>./nodes/00-eosio/stderr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.bpay EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.msig EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.names EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.ram EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.ramfee EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.saving EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.stake EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.token EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.vpay EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 create account eosio eosio.rex EOS8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr
+/usr/bin/cleos --url http://127.0.0.1:8000 set contract eosio.token /root/eosio.contracts/build/eosio.token/
+/usr/bin/cleos --url http://127.0.0.1:8000 set contract eosio.msig /root/eosio.contracts/build/eosio.msig/
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio.token create '["eosio", "10000000000.0000 XFS"]' -p eosio.token
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio.token issue '["eosio", "1000000000.0000 XFS", "memo"]' -p eosio
+/usr/bin/cleos --url http://127.0.0.1:8000 set contract eosio /root/eosio.contracts/build/eosio.system/
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio setpriv '["eosio.msig", 1]' -p eosio@active
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio init '["0", "4,XFS"]' -p eosio@active
+/usr/bin/cleos --url http://127.0.0.1:8000 system newaccount --transfer eosio usertrung123 EOS7WnhaKwHpbSidYuh2DF1qAExTRUtPEdZCaZqt75cKcixuQUtdA --stake-net "275784951.2927 XFS" --stake-cpu "275784951.2927 XFS" --buy-ram "10000.0000 XFS"   
+/usr/bin/cleos --url http://127.0.0.1:8000 transfer eosio usertrung123 "1000000.0000 XFS"
+/usr/bin/cleos --url http://127.0.0.1:8000 system newaccount --transfer eosio userjohn1234 EOS7Bn1YDeZ18w2N9DU4KAJxZDt6hk3L7eUwFRAc1hb5bp6xJwxNV --stake-net "71064025.8898 XFS" --stake-cpu "71064025.8899 XFS" --buy-ram "10000.0000 XFS"   
+/usr/bin/cleos --url http://127.0.0.1:8000 transfer eosio userjohn1234 "1000000.0000 XFS"
+/usr/bin/cleos --url http://127.0.0.1:8000 system newaccount --transfer eosio usertim12345 EOS6cNcTC6WTFkKV4C8DoxcTXdDTDKvj3vgZEVDGVFckK1eTNJQtf --stake-net "54028040.6716 XFS" --stake-cpu "54028040.6716 XFS" --buy-ram "10000.0000 XFS"   
+/usr/bin/cleos --url http://127.0.0.1:8000 transfer eosio usertim12345 "1000000.0000 XFS"
+/usr/bin/cleos --url http://127.0.0.1:8000 system newaccount --transfer eosio useradmin111 EOS8UkmsnCo4GxDihbKwgoZY6f2QLSMEqBZ2frGLckxrCHrz15r7X --stake-net "46711753.7537 XFS" --stake-cpu "46711753.7537 XFS" --buy-ram "10000.0000 XFS"   
+/usr/bin/cleos --url http://127.0.0.1:8000 transfer eosio useradmin111 "1000000.0000 XFS"
+/usr/bin/cleos --url http://127.0.0.1:8000 system newaccount --transfer eosio producer111a EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz --stake-net "41558779.1318 XFS" --stake-cpu "41558779.1318 XFS" --buy-ram "10000.0000 XFS"   
+/usr/bin/cleos --url http://127.0.0.1:8000 transfer eosio producer111a "1000000.0000 XFS"
+/usr/bin/cleos --url http://127.0.0.1:8000 system newaccount --transfer eosio producer111b EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC --stake-net "7822449.2604 XFS" --stake-cpu "7822449.2603 XFS" --buy-ram "10000.0000 XFS"   
+/usr/bin/cleos --url http://127.0.0.1:8000 transfer eosio producer111b "1000000.0000 XFS"
+/usr/bin/cleos --url http://127.0.0.1:8000 system regproducer producer111a EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz https://producer111a.com/EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz
+/usr/bin/cleos --url http://127.0.0.1:8000 system regproducer producer111b EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC https://producer111b.com/EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC
+/usr/bin/cleos --url http://127.0.0.1:8000 system listproducers
+rm -rf ./nodes/01-producer111a/
+mkdir -p ./nodes/01-producer111a/
+/usr/bin/nodeos    --max-irreversible-block-age -1    --contracts-console    --genesis-json /root/bios-boot-scripts/genesis.json    --blocks-dir /root/bios-boot-scripts/nodes/01-producer111a/blocks    --config-dir /root/bios-boot-scripts/nodes/01-producer111a    --data-dir /root/bios-boot-scripts/nodes/01-producer111a    --chain-state-db-size-mb 1024    --http-server-address 127.0.0.1:8001    --p2p-listen-endpoint 127.0.0.1:9001    --max-clients 12    --p2p-max-nodes-per-host 12    --enable-stale-production    --producer-name producer111a    --private-key '["EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz","5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b"]'    --plugin eosio::http_plugin    --plugin eosio::chain_api_plugin    --plugin eosio::producer_plugin    --p2p-peer-address localhost:9000    2>>./nodes/01-producer111a/stderr
+rm -rf ./nodes/02-producer111b/
+mkdir -p ./nodes/02-producer111b/
+/usr/bin/nodeos    --max-irreversible-block-age -1    --contracts-console    --genesis-json /root/bios-boot-scripts/genesis.json    --blocks-dir /root/bios-boot-scripts/nodes/02-producer111b/blocks    --config-dir /root/bios-boot-scripts/nodes/02-producer111b    --data-dir /root/bios-boot-scripts/nodes/02-producer111b    --chain-state-db-size-mb 1024    --http-server-address 127.0.0.1:8002    --p2p-listen-endpoint 127.0.0.1:9002    --max-clients 12    --p2p-max-nodes-per-host 12    --enable-stale-production    --producer-name producer111b    --private-key '["EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC","5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu"]'    --plugin eosio::http_plugin    --plugin eosio::chain_api_plugin    --plugin eosio::producer_plugin    --p2p-peer-address localhost:9000    --p2p-peer-address localhost:9001    2>>./nodes/02-producer111b/stderr
+/usr/bin/cleos --url http://127.0.0.1:8000 system voteproducer prods usertrung123 producer111b producer111a
+/usr/bin/cleos --url http://127.0.0.1:8000 system voteproducer prods userjohn1234 producer111b producer111a
+/usr/bin/cleos --url http://127.0.0.1:8000 system listproducers
+/usr/bin/cleos --url http://127.0.0.1:8000 get table eosio eosio producers -l 100
+/usr/bin/cleos --url http://127.0.0.1:8000 system voteproducer prods producer111a producer111b producer111a
+/usr/bin/cleos --url http://127.0.0.1:8000 system regproxy producer111a
+/usr/bin/cleos --url http://127.0.0.1:8000 system voteproducer proxy usertrung123 producer111a
+/usr/bin/cleos --url http://127.0.0.1:8000 system voteproducer proxy userjohn1234 producer111a
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio.prods", "permission": "active"}}]}}' -p eosio@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio.prods", "permission": "active"}}]}}' -p eosio@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.bpay", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.bpay@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.bpay", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.bpay@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.bpay
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.msig", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.msig@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.msig", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.msig@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.msig
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.names", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.names@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.names", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.names@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.names
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.ram", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.ram@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.ram", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.ram@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.ram
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.ramfee", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.ramfee@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.ramfee", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.ramfee@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.ramfee
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.saving", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.saving@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.saving", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.saving@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.saving
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.stake", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.stake@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.stake", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.stake@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.stake
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.token", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.token@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.token", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.token@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.token
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.vpay", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.vpay@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.vpay", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.vpay@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.vpay
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.rex", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.rex@owner
+/usr/bin/cleos --url http://127.0.0.1:8000 push action eosio updateauth '{"account": "eosio.rex", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio", "permission": "active"}}]}}' -p eosio.rex@active
+/usr/bin/cleos --url http://127.0.0.1:8000 get account eosio.rex
+tail -n 60 ./nodes/00-eosio/stderr
